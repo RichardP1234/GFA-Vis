@@ -421,7 +421,8 @@ for mo in range(4):
 
 
 
-import plotly.io as pio
-pio.renderers.default='browser'
-fig.show()
-            
+#import plotly.io as pio
+#pio.renderers.default='browser'
+
+fig.write_html("index.html", include_plotlyjs='cdn')
+#fig.show()     
