@@ -296,8 +296,8 @@ for index in range(10):
     patterns = ['','x','','x']
     counter = 0
     feature_names_fancy_flat = []
-    for mo in range(4):
-        for f in range(7):
+    for f in range(7):
+        for mo in range(4):
             bar = go.Bar(
                         x=[shap_values[0,f,mo]],
                         y=[counter],#[feature_names_fancy[f,mo]],
@@ -351,6 +351,7 @@ for index in range(10):
                 label = "{0:.0f}%".format(P)
             )
         cc = 0
+        #Dimensions
         for mo in range(4):
             for i,f in enumerate(['amp','x','y','sigx','sigy','theta','offset']):
                 add = len(Shaps[f + str(mo+1)])
@@ -360,11 +361,13 @@ for index in range(10):
                         cc += 1
                 else:
                     cc += add
-        for mo in range(4):
-            for i,f in enumerate(['amp','x','y','sigx','sigy','theta','offset']):
+        #Bar Chart
+        for i,f in enumerate(['amp','x','y','sigx','sigy','theta','offset']):
+            for mo in range(4):
                 if f + str(mo+1) in f_plot:
                     step["args"][0]["visible"][cc] = True
                 cc += 1
+        #Other traces (i.e. surfaces etc.)
         for cc2 in range(cc,n_traces):
             step["args"][0]["visible"][cc2] = True
     
