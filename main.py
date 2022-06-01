@@ -12,6 +12,8 @@ from plotly import subplots
 #%% Load in an image, feature and Shapley values
 indexes = np.load('Data/indexes_XTest_E.npy')
 index = np.random.randint(len(indexes))
+
+clist = ['mediumpurple','red','dodgerblue','black','blue','mediumvioletred','green']
 for index in range(10):
     image = np.load('Data/images.npy')[index]
     image_W = np.load('Data/images_W.npy')[index]
@@ -158,19 +160,19 @@ for index in range(10):
             xx = [origin[0],x0]
             yy = [origin[1],origin[1]]
             zz = [origin[2],origin[2]]
-            Shaps['x' + str(mo+1)] = Arrow3D(xx, yy, zz,'black',lw,arrow_tip_size=ar_size_def)
+            Shaps['x' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[1],lw,arrow_tip_size=ar_size_def+4)
     
             #y0
             xx = [origin[0],origin[0]]
             yy = [origin[1],y0]
             zz = [origin[2],origin[2]]
-            Shaps['y' + str(mo+1)] = Arrow3D(xx, yy, zz,'black',lw,arrow_tip_size=ar_size_def)
+            Shaps['y' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[2],lw,arrow_tip_size=ar_size_def)
             
             #Amp
             xx = [x0,x0]
             yy = [y0,y0]
             zz = [offset,offset+amp]
-            Shaps['amp' + str(mo+1)] = Arrow3D(xx, yy, zz,'black',lw,arrow_tip_size=ar_size_def*1.5*np.max(Feat1[0,:])/width)
+            Shaps['amp' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[0],lw,arrow_tip_size=ar_size_def*1.5*np.max(Feat1[0,:])/width)
             
             #Sigy
             x1 = x0 - sigy*np.tan(theta)
@@ -181,7 +183,7 @@ for index in range(10):
             xx = [x1,x2]
             yy = [y1,y2]
             zz = [z_sig1+offset,z_sig1+offset]
-            Shaps['sigy' + str(mo+1)] = Arrow3D(xx, yy, zz,'black',lw,arrow_tip_size=ar_size_def,begin=True,max_tip_perc=0.4)
+            Shaps['sigy' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[4],lw,arrow_tip_size=ar_size_def,begin=True,max_tip_perc=0.4)
             
             
             #Sigx
@@ -193,7 +195,7 @@ for index in range(10):
             xx = [x1,x2]
             yy = [y1,y2]
             zz = [z_sig1+offset,z_sig1+offset]
-            Shaps['sigx' + str(mo+1)] = Arrow3D(xx, yy, zz,'black',lw,arrow_tip_size=ar_size_def,begin=True,max_tip_perc=0.4)
+            Shaps['sigx' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[3],lw,arrow_tip_size=ar_size_def,begin=True,max_tip_perc=0.4)
             
             
             #Theta
@@ -216,22 +218,22 @@ for index in range(10):
                 y=yline,
                 z=zline,
                 mode='lines',
-                line = dict(width = lw, color = 'black'),
+                line = dict(width = lw, color = clist[5]),
                 showlegend=False,hoverinfo='none')
-            ar1 = Arrow3D([xline[-20],xline[-1]], [yline[-20],yline[-1]], zline[-2:],'black',lw,arrow_tip_size=ar_size_def,max_tip_perc=1)
+            ar1 = Arrow3D([xline[-20],xline[-1]], [yline[-20],yline[-1]], zline[-2:],clist[5],lw,arrow_tip_size=ar_size_def,max_tip_perc=1)
             line2 = go.Scatter3d(
                 x=[centre[0],centre[1]],
                 y=[np.max(yline),np.max(yline)],
                 z=[zline[0],zline[0]],
                 mode='lines',
-                line = dict(width = lw, color = 'black'),
+                line = dict(width = lw, color = clist[5]),
                 showlegend=False,hoverinfo='none')
             line3 = go.Scatter3d(
                 x=[centre[0],centre[1]-rho-ex+pol2cart(rho+ex, theta2)[0]],
                 y=[np.max(yline),np.max(yline)+pol2cart(rho+ex, theta2)[1]],
                 z=[zline[0],zline[0]],
                 mode='lines',
-                line = dict(width = lw, color = 'red',dash='longdash'),
+                line = dict(width = lw, color = clist[5],dash='longdash'),
                 showlegend=False,hoverinfo='none')
             
     
@@ -244,7 +246,7 @@ for index in range(10):
                 zz = [0,offset]
             else:
                 zz = [0,offset+np.max(image_W)*0.05]
-            Shaps['offset' + str(mo+1)] = Arrow3D(xx, yy, zz,'green',lw,arrow_tip_size=ar_size_def,max_tip_perc=0.7)
+            Shaps['offset' + str(mo+1)] = Arrow3D(xx, yy, zz,clist[6],lw,arrow_tip_size=ar_size_def,max_tip_perc=0.7)
         
             
         return Shaps,flat_orig,gauss_surf
@@ -277,7 +279,7 @@ for index in range(10):
     maxcols = 5
     fig = subplots.make_subplots(rows=1, cols=maxcols,
                                      specs=specs,column_widths = (1,1,1,1,0.3),
-                                     subplot_titles=('(1) SS-S, Ψ = -45&deg;','(2) SS-L, Ψ = -45&deg;','(3) SS-S, Ψ = 45&deg;','(1) SS-L, Ψ = 45&deg;',''))
+                                     subplot_titles=('(1) SS-S, Ψ = -45&deg;','(2) SS-L, Ψ = -45&deg;','(3) SS-S, Ψ = 45&deg;','(4) SS-L, Ψ = 45&deg;',''))
     
     
     
@@ -292,8 +294,7 @@ for index in range(10):
     
     max1 = np.max(shap_values)
     #Bar Chart
-    colours = ['black','black','red','red']
-    patterns = ['','x','','x']
+    patterns = ['','','','','','','']
     counter = 0
     feature_names_fancy_flat = []
     for f in range(7):
@@ -306,7 +307,7 @@ for index in range(10):
                         hoverlabel=dict(namelength=0),
                         width=0.9,
                         orientation='h',
-                        marker=dict(color = colours[mo],
+                        marker=dict(color = clist[f],
                                     pattern = dict(shape = patterns[mo],solidity=.7)),
                         showlegend=False)
             feature_names_fancy_flat.append(feature_names_fancy[f,mo])
@@ -372,18 +373,18 @@ for index in range(10):
             step["args"][0]["visible"][cc2] = True
     
         steps.append(step)
-        
     transition = {"duration":300}    
     sliders = [dict(
         active=len(steps),
-        currentvalue={"prefix":"selected plotting at least ","suffix":" of total |Shapley values|"},#visible": False},
+        font = {"size":14},
+        currentvalue={"prefix":"selected plotting at least ","suffix":" of total |Shapley values|","font":{"size":16}},#visible": False},
         pad={"t": 50,},
         steps=steps,
-        transition = transition,
+        transition = transition
     )]
     
     
-    fig.update_layout(
+    fig.update_layout(font_size=12,
         sliders=sliders,
     scene1=dict(
         xaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[x[0]-4.1,x[-1]-4.1]),
@@ -403,7 +404,7 @@ for index in range(10):
         zaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[0,np.max(feat[0,:]+feat[-1,:])*1.05])),
     height=700,width=1700)
     
-    fig['layout']['xaxis1']['title']=dict(text='Shapley Value (mm)',font=dict(size=12))
+    fig['layout']['xaxis1']['title']=dict(text='Shapley Value (mm)')
     fig['layout']['xaxis1']['title']['standoff'] = 0
     fig['layout']['xaxis1']['side'] = 'top'
     
@@ -444,9 +445,11 @@ for index in range(10):
                       xref="paper", yref="paper",font = {'size':20},
                       x=0.5, y=-0.16, showarrow=False,bordercolor='black',borderpad=4)
     
+    
     for annotation in fig['layout']['annotations'][:-1]: 
             annotation['y']=0.85
             annotation['bgcolor']='white'
+            annotation['font']['size'] = 20
             
     fig.write_html("index"+str(index)+".html", include_plotlyjs='cdn')
 
