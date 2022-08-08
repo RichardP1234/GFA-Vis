@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly import subplots
 
+
 #%% Load in an image, feature and Shapley values
 indexes = np.load('Data/indexes_XTest_E.npy')
 index = np.random.randint(len(indexes))
@@ -377,7 +378,7 @@ for index in range(10):
     sliders = [dict(
         active=len(steps),
         font = {"size":14},
-        currentvalue={"prefix":"selected plotting at least ","suffix":" of total |Shapley values|","font":{"size":16}},#visible": False},
+        currentvalue={"prefix":"selected plotting at least ","suffix":" of total |SHAP|","font":{"size":16}},#visible": False},
         pad={"t": 50,},
         steps=steps,
         transition = transition
@@ -404,7 +405,7 @@ for index in range(10):
         zaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[0,np.max(feat[0,:]+feat[-1,:])*1.05])),
     height=700,width=1700)
     
-    fig['layout']['xaxis1']['title']=dict(text='Shapley Value (mm)')
+    fig['layout']['xaxis1']['title']=dict(text='Feature importance (mm)')
     fig['layout']['xaxis1']['title']['standoff'] = 0
     fig['layout']['xaxis1']['side'] = 'top'
     
@@ -452,8 +453,7 @@ for index in range(10):
             annotation['font']['size'] = 20
             
     fig.write_html("index"+str(index)+".html", include_plotlyjs='cdn')
-
-#import plotly.io as pio
-#pio.renderers.default='browser'
-#fig.show()
+    #import plotly.io as pio
+    #pio.renderers.default='browser'
+    #fig.show()
         
