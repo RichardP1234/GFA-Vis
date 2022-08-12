@@ -22,7 +22,7 @@ for index in range(10):
     feat = np.load('Data/Feat.npy')[index]
     Y = np.load('Data/Y.npy')[index]
     ii = np.load('Data/indexes_XTest_E.npy')[index]
-    shap_values = np.abs(np.load('Data/shap_values.npy')[index])*1e3 #mm
+    shap_values = np.load('Data/shap_values.npy')[index]*1e3 #mm
     mid = np.load('Data/mids.npy')[index]
     pred = np.load('Data/Preds.npy')[index]
     ref = np.load('Data/max_PWI_S.npy')
@@ -294,6 +294,7 @@ for index in range(10):
     n_traces_dims = len(fig.data)
     
     max1 = np.max(shap_values)
+    min1 = np.min(shap_values)
     #Bar Chart
     patterns = ['','','','','','','']
     counter = 0
@@ -405,14 +406,14 @@ for index in range(10):
         zaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[0,np.max(feat[0,:]+feat[-1,:])*1.05])),
     height=700,width=1700)
     
-    fig['layout']['xaxis1']['title']=dict(text='Feature importance (mm)')
+    fig['layout']['xaxis1']['title']=dict(text='SHAP value,<br>i.e. feature contribution (mm)')
     fig['layout']['xaxis1']['title']['standoff'] = 0
     fig['layout']['xaxis1']['side'] = 'top'
     
     fig['layout']['xaxis1']['fixedrange'] = True
     fig['layout']['yaxis1']['fixedrange'] = True
     
-    fig['layout']['xaxis1']['range'] = [0,np.max(shap_values)]
+    fig['layout']['xaxis1']['range'] = [min1,max1]
     fig['layout']['yaxis1']['range'] = [-1,len(feature_names)]
     
     fig['layout']['yaxis1']['tickvals'] = np.arange(len(feature_names))
