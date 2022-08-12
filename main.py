@@ -255,7 +255,7 @@ for index in range(10):
     x = np.arange(width)
     z = np.flip(32-np.arange(height))
     #%% Shapley values - > which features
-    fs_fancy = ['Amp', 'Pos<sub>x</sub>', 'Pos<sub>y</sub>', 'Sigma<sub>x</sub>', 'Sigma<sub>y</sub>', 'Theta', 'Offset']
+    fs_fancy = ['Amp', 'Pos<sub>x</sub>', 'Pos<sub>z</sub>', 'Sigma<sub>x</sub>', 'Sigma<sub>z</sub>', 'Theta', 'Offset']
     feature_names_fancy = np.array([[x+' (1)' for x in fs_fancy],[x+' (2)' for x in fs_fancy],[x+' (3)' for x in fs_fancy],[x+' (4)' for x in fs_fancy]]).swapaxes(0,1)
     
     
@@ -406,7 +406,7 @@ for index in range(10):
         zaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[0,np.max(feat[0,:]+feat[-1,:])*1.05])),
     height=700,width=1700)
     
-    fig['layout']['xaxis1']['title']=dict(text='SHAP value,<br>i.e. feature contribution (mm)')
+    fig['layout']['xaxis1']['title']=dict(text='SHAP value (mm)<br>i.e. feature contribution')
     fig['layout']['xaxis1']['title']['standoff'] = 0
     fig['layout']['xaxis1']['side'] = 'top'
     
