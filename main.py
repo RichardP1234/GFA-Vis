@@ -15,7 +15,7 @@ indexes = np.load('Data/indexes_XTest_E.npy')
 index = np.random.randint(len(indexes))
 
 clist = ['mediumpurple','red','dodgerblue','black','blue','mediumvioletred','green']
-for index in range(10):
+for index in range(4,5):
     image = np.load('Data/images.npy')[index]
     image_W = np.load('Data/images_W.npy')[index]
     #image_Gauss = np.load('recons.npy')[index]
@@ -255,8 +255,18 @@ for index in range(10):
     x = np.arange(width)
     z = np.flip(32-np.arange(height))
     #%% Shapley values - > which features
-    fs_fancy = ['Amp', 'Pos<sub>x</sub>', 'Pos<sub>z</sub>', 'Sigma<sub>x</sub>', 'Sigma<sub>z</sub>', 'Theta', 'Offset']
+    fs_fancy = ['Amp', 'Pos<sub>x</sub>', 'Pos<sub>z</sub>', 'Sigma<sub>x</sub>', 'Sigma<sub>z</sub>', 'Angle', 'Offset']
     feature_names_fancy = np.array([[x+' (1)' for x in fs_fancy],[x+' (2)' for x in fs_fancy],[x+' (3)' for x in fs_fancy],[x+' (4)' for x in fs_fancy]]).swapaxes(0,1)
+    
+    fs = ['$A$', '$x_0$', '$\z_0$', '$\sigma_x$', '$\sigma_z$', '$\Theta$', '$B$']
+    feature_names_fancy = np.array([['$A~(1)$','$A~(2)$','$A~(3)$','$A~(4)$'],
+                ['$x_0~(1)$','$x_0~(2)$','$x_0~(3)$','$x_0~(4)$'],
+                ['$z_0~(1)$','$z_0~(2)$','$z_0~(3)$','$z_0~(4)$'],
+                ['$\sigma_x~(1)$','$\sigma_x~(2)$','$\sigma_x~(3)$','$\sigma_x~(4)$'],
+                ['$\sigma_z~(1)$','$\sigma_z~(2)$','$\sigma_z~(3)$','$\sigma_z~(4)$'],
+                ['$\Theta~(1)$','$\Theta~(2)$','$\Theta~(3)$','$\Theta~(4)$'],
+                ['$B~(1)$','$B~(2)$','$B~(3)$','$B~(4)$']])
+    
     
     
     fs = ['amp', 'x', 'y', 'sigx', 'sigy', 'theta', 'offset']
@@ -299,8 +309,8 @@ for index in range(10):
     patterns = ['','','','','','','']
     counter = 0
     feature_names_fancy_flat = []
-    for f in range(7):
-        for mo in range(4):
+    for f in reversed(range(7)):
+        for mo in reversed(range(4)):
             bar = go.Bar(
                         x=[shap_values[0,f,mo]],
                         y=[counter],#[feature_names_fancy[f,mo]],
@@ -386,7 +396,7 @@ for index in range(10):
     )]
     
     
-    fig.update_layout(font_size=12,
+    fig.update_layout(font_size=10,
         sliders=sliders,
     scene1=dict(
         xaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[x[0]-4.1,x[-1]-4.1]),
@@ -404,7 +414,7 @@ for index in range(10):
         xaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[x[0]-4.1,x[-1]+4.1]),
         yaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[z[0]-4.1,z[-1]+4.1]),
         zaxis=dict(showticklabels=False,visible=False,showspikes=False,range=[0,np.max(feat[0,:]+feat[-1,:])*1.05])),
-    height=700,width=1700)
+    height=700,width=1700,font = {"size":13})
     
     fig['layout']['xaxis1']['title']=dict(text='SHAP value (mm)<br>i.e. feature contribution')
     fig['layout']['xaxis1']['title']['standoff'] = 0
@@ -453,8 +463,8 @@ for index in range(10):
             annotation['bgcolor']='white'
             annotation['font']['size'] = 20
             
-    fig.write_html("index"+str(index)+".html", include_plotlyjs='cdn')
-    #import plotly.io as pio
-    #pio.renderers.default='browser'
-    #fig.show()
+    #fig.write_html("index"+str(index)+".html", include_plotlyjs='cdn')
+    import plotly.io as pio
+    pio.renderers.default='browser'
+    fig.show()
         
